@@ -1,2 +1,5 @@
 spotipy
 requests
+typing
+dataclasses
+logging
