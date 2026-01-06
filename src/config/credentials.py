@@ -1,0 +1,4 @@
+# src/config/credentials.py
+SPOTIFY_CLIENT_ID = "df3165f8c18f4002b2e5267b7c285d39"
+SPOTIFY_CLIENT_SECRET = "da4dc218fc794e35bc55b05730f77b1a"
+SPOTIFY_REDIRECT_URI = "http://127.0.0.1:8888/callback"

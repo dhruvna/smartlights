@@ -1,0 +1,19 @@
+# Python-related files
+# __pycache__/
+*.py[cod]
+env/
+
+# OS-generated files
+.DS_Store
+
+# Environment variables
+.venv
+
+# Logs
+*.log
+
+# Spotify credentials
+config/credentials.py
+
+# Cache files
+.cache
