@@ -3,16 +3,15 @@
 import colorthief
 from PIL import Image
 
-def get_color_palette(filename, num_colors=5):
+def extract_palette(filename, num_colors=5, quality=5):
     color_thief = colorthief.ColorThief(filename)
-    palette = color_thief.get_palette(color_count=num_colors)
+    palette = color_thief.get_palette(color_count=num_colors, quality=quality)
     return palette
 
-def create_color_image(colors, output_file='extracted_colors.jpg'):
-    img = Image.new('RGB', (100 * len(colors), 100))
+def save_palette_preview(colors, output_file='extracted_colors.jpg', block_size=100):
+    img = Image.new("RGB", (block_size * len(colors), block_size))
     for i, color in enumerate(colors):
-        for x in range(100):
-            for y in range(100):
-                img.putpixel((i * 100 + x, y), color)
+        block = Image.new("RGB", (block_size, block_size), color)
+        img.paste(block, (i * block_size, 0))
     img.save(output_file)
     return output_file
