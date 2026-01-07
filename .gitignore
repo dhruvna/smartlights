@@ -20,3 +20,6 @@ config/credentials.py
 
 # Currently Playing Album Art
 currently_playing.jpg
+
+# Color Palette Image
+extracted_colors.jpg

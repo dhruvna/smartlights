@@ -3,3 +3,6 @@ requests
 typing
 dataclasses
 logging
+colorthief
+neopixel
+board

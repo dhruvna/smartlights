@@ -11,6 +11,11 @@ from spotify.api import (
     download_album_art
 )
 
+from util.colors import (
+    get_color_palette,
+    create_color_image
+)
+
 logger = logging.getLogger("smartlights")
 logging.basicConfig(level=logging.INFO)
 
@@ -42,18 +47,23 @@ def fetch_current_track(sp, poll_interval=1):
             track_id = track_info.track_id
             if track_id != current_track_id:
                 current_track_id = track_id
+                artist_str = ", ".join(track_info.artists) if track_info.artists else "Unknown artist"
                 logger.info(
                     "New track: %s — %s",
                     track_info.track_name,
-                    ", ".join(track_info.artists),
+                    artist_str,
                 )
 
                 album_art_file = download_album_art(track_info.album_image_url)
                 if album_art_file:
-                    logger.info(f"Downloaded album art to {album_art_file}")
+                    logger.debug(f"Downloaded album art to {album_art_file}")
                 else:
-                    logger.info("No album art available to download.")
-            
+                    logger.error("No album art available to download.")
+
+                colors = get_color_palette(album_art_file)
+                color_image_file = create_color_image(colors)
+                logger.debug(f"Created color image at {color_image_file}")
+                
             logger.debug(
                 "Progress: %s / %s",
                 fmt_mmss(track_info.progress),
@@ -70,7 +80,7 @@ def main():
     sp = get_spotify_client()
 
     me = get_current_user(sp)
-    logger.info("Authorized as: %s | %s", me.display_name, me.id)
+    logger.info("Authorized as: %s", me.display_name)
 
     track_thread = threading.Thread(target=fetch_current_track, args=(sp,), daemon=False)
     track_thread.start()
