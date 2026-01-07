@@ -1,7 +1,7 @@
 # spotify/models.py
 
 from dataclasses import dataclass
-from  typing import Optional, List
+from typing import Optional, List
 
 @dataclass(frozen=True)
 class UserProfile:

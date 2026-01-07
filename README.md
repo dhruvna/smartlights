@@ -13,12 +13,13 @@
 
 ## 2. Raspberry Pi Setup
 - [x] **Pi Setup**: Prep SD card, boot + configure RPi
-- [ ] **Software Setup**: Install relevant libraries, enable interfaces
+- [x] **Software Setup**: Install relevant libraries, enable interfaces
 
 ## 3. Spotify Authentication/Integration
 - [x] **OAuth Flow**: Using Authentication Flow, save an auth code and use it to generate access tokens
-- [ ] **Querying**: Retrieve information about current playback state, songs, playlists, etc user data
- 
+- [x] **Querying**: Retrieve information about current playback state, songs, playlists, etc user data
+- [x] **Polling System**: Fetch data every second
+
 ## 4. LCD Testing
 - [ ] **Initial Test Script**:
   - [ ] Create a Python script to control the NeoPixel strip (basic color change)
@@ -29,7 +30,7 @@
   - [ ] Implement a command-line interface (CLI) or lightweight GUI for manual color selection / picking from preset color palettes
   - [ ] Add functionality for saving and loading favorite color presets.
 - [ ] **Mode 2: Album Cover-Based Colors**:
-  - [ ] Use Spotify API to fetch the album cover.
+  - [x] Use Spotify API to fetch the album cover.
   - [ ] Fetch the color palette of the album cover
   - [ ] Set NeoPixel colors accordingly.
 - [ ] **Mode 3: Volume/Intensity Visualizer**:

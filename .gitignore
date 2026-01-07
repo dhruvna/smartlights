@@ -17,3 +17,6 @@ config/credentials.py
 
 # Cache files
 .cache
+
+# Currently Playing Album Art
+currently_playing.jpg
