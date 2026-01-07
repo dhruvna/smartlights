@@ -1,7 +1,6 @@
 # leds/led_control.py
 
 from rpi_ws281x import PixelStrip, Color
-from time import sleep
 
 # LED Config
 LED_COUNT = 5          # Number of LED pixels.

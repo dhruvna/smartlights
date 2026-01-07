@@ -65,11 +65,12 @@ def fetch_current_track(sp, poll_interval=1):
                 album_art_file = download_album_art(track_info.album_image_url)
                 if album_art_file:
                     logger.debug(f"Downloaded album art to {album_art_file}")
+                    colors = extract_palette(album_art_file)
                 else:
                     logger.error("No album art available to download.")
                     clear_strip(strip)
-
-                colors = extract_palette(album_art_file)
+                    continue
+                
                 if colors:
                     color_image_file = save_palette_preview(colors)
                     logger.debug(f"Created color image at {color_image_file}")
