@@ -4,5 +4,4 @@ typing
 dataclasses
 logging
 colorthief
-neopixel
-board
+rpi_ws281x
