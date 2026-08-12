@@ -1,0 +1,26 @@
+# TEMPORARILY IGNORING NOTHING BUT CAN REMOVE THINGS LATER
+# # Python-related files
+__pycache__/
+# *.py[cod]
+# env/
+
+# # OS-generated files
+# .DS_Store
+
+# # Environment variables
+# .venv
+
+# # Logs
+# *.log
+
+# # Spotify credentials
+# config/credentials.py
+
+# # Cache files
+# .cache
+
+# # Currently Playing Album Art
+# currently_playing.jpg
+
+# # Color Palette Image
+# extracted_colors.jpg
