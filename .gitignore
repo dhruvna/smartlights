@@ -2,7 +2,6 @@
 # Python-related files
 __pycache__/
 *.py[cod]
-env/
 
 # OS-generated files
 .DS_Store
