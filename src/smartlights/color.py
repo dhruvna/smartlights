@@ -4,12 +4,14 @@ def validate_channel(value: int) -> int:
 
     return value
 
+
 def describe_color(red: int, green: int, blue: int) -> str:
     red = validate_channel(red)
     green = validate_channel(green)
     blue = validate_channel(blue)
 
     return f"RGB({red}, {green}, {blue})"
+
 
 if __name__ == "__main__":
     favorite_color = describe_color(128, 64, 255)
