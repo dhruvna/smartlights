@@ -1,27 +1,25 @@
 import pytest
 
-from smartlights.color import describe_color
+from smartlights.color import RGB
 
 
-def test_describe_color() -> None:
-    result = describe_color(255, 0, 128)
+def test_rgb_stores_channels() -> None:
+    color = RGB(red=255, green=0, blue=128)
 
-    assert result == "RGB(255, 0, 128)"
-
-
-def test_describe_color_rejects_channel_above_255() -> None:
-    with pytest.raises(
-        ValueError,
-        match="RGB channel must be between 0 and 255; received 256",
-    ):
-        describe_color(256, 0, 0)
+    assert color.red == 255
+    assert color.green == 0
+    assert color.blue == 128
 
 
-def test_describe_color_rejects_channel_below_zero() -> None:
+def test_rgb_formats_as_string() -> None:
+    assert str(RGB(255, 0, 128)) == "RGB(255, 0, 128)"
+
+
+@pytest.mark.parametrize("value", [-1, 256])
+def test_rgb_rejects_invalid_channels(value: int) -> None:
     with pytest.raises(ValueError):
-        describe_color(0, -1, 0)
+        RGB(value, 0, 0)
 
 
-def test_describe_color_accepts_channel_boundaries() -> None:
-    assert describe_color(0, 0, 0) == "RGB(0, 0, 0)"
-    assert describe_color(255, 255, 255) == "RGB(255, 255, 255)"
+def test_rgb_values_compare_by_channels() -> None:
+    assert RGB(12, 34, 56) == RGB(12, 34, 56)

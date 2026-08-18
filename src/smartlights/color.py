@@ -1,18 +1,20 @@
-def validate_channel(value: int) -> int:
-    if value < 0 or value > 255:
+from dataclasses import dataclass
+
+def validate_channel(value: int) -> None:
+    if not 0 <= value <= 255:
         raise ValueError(f"RGB channel must be between 0 and 255; received {value}")
 
-    return value
+@dataclass(frozen=True, slots=True)
+class RGB:
+    red: int
+    green: int
+    blue: int
 
+    def __post_init__(self) -> None:
+        validate_channel(self.red)
+        validate_channel(self.green)
+        validate_channel(self.blue)
 
-def describe_color(red: int, green: int, blue: int) -> str:
-    red = validate_channel(red)
-    green = validate_channel(green)
-    blue = validate_channel(blue)
-
-    return f"RGB({red}, {green}, {blue})"
-
-
-if __name__ == "__main__":
-    favorite_color = describe_color(128, 64, 255)
-    print(favorite_color)
+    def __str__(self) -> str:
+        return f"RGB({self.red}, {self.green}, {self.blue})"
+    
