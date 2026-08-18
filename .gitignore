@@ -1,13 +1,13 @@
-# TEMPORARILY IGNORING NOTHING BUT CAN REMOVE THINGS LATER
+# Environment variables
+.venv
+
 # Python-related files
 __pycache__/
 *.py[cod]
-
+*.egg-info/
+build/
 # OS-generated files
 .DS_Store
-
-# Environment variables
-.venv
 
 # Logs
 # *.log

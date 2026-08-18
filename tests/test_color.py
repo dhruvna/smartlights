@@ -1,6 +1,6 @@
 import pytest
 
-from color import describe_color
+from smartlights.color import describe_color
 
 
 def test_describe_color() -> None:
