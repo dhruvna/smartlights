@@ -1,12 +1,12 @@
 import os
 from pathlib import Path
-from typing import Any
 
 import spotipy
 from spotipy.cache_handler import CacheFileHandler
 from spotipy.oauth2 import SpotifyPKCE
 
 from smartlights.spotify.models import TrackSnapshot
+from smartlights.spotify.parsing import parse_currently_playing
 
 SPOTIFY_SCOPE = "user-read-currently-playing"
 REDIRECT_URI = "http://127.0.0.1:8888/callback"
@@ -34,43 +34,6 @@ class SpotifyClient:
         self._client = spotipy.Spotify(auth_manager=auth_manager)
 
     def currently_playing(self) -> TrackSnapshot | None:
-        response: dict[str, Any] | None = self._client.current_user_playing_track()
+        response = self._client.current_user_playing_track()
 
-        if not response:
-            return None
-
-        item = response.get("item")
-        if not isinstance(item, dict) or item.get("type") != "track":
-            return None
-
-        album = item.get("album")
-        if not isinstance(album, dict):
-            return None
-
-        artists_data = item.get("artists", [])
-        artists = tuple(
-            artist["name"]
-            for artist in artists_data
-            if isinstance(artist, dict) and isinstance(artist.get("name"), str)
-        )
-
-        images = album.get("images", [])
-        album_art_url = next(
-            (
-                image["url"]
-                for image in images
-                if isinstance(image, dict) and isinstance(image.get("url"), str)
-            ),
-            None,
-        )
-
-        return TrackSnapshot(
-            track_id=str(item["id"]),
-            name=str(item["name"]),
-            artists=artists,
-            album_name=str(album["name"]),
-            album_art_url=album_art_url,
-            is_playing=bool(response.get("is_playing")),
-            progress_ms=int(response.get("progress_ms") or 0),
-            duration_ms=int(item.get("duration_ms") or 0),
-        )
+        return parse_currently_playing(response)
