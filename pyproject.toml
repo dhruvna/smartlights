@@ -7,15 +7,16 @@ name = "smartlights"
 version = "0.1.0"
 description = "A Raspberry Pi controller for addressable smart lights."
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "Pillow>=12.3,<13",
+    "spotipy>=2.26,<3",
+]
 
 [project.optional-dependencies]
 dev = [
     "mypy>=2,<3",
     "pytest>=9,<10",
     "ruff>=0.15,<1",
-    "Pillow>=12.3,<13",
-    "spotipy>=2.26,<3",
 ]
 
 [tool.setuptools.packages.find]
@@ -27,7 +28,16 @@ line-length = 100
 extend-exclude = ["v1"]
 
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F", "I"]
+select = [
+    "B",
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "I",
+    "SIM",
+    "UP",
+]
 
 [tool.mypy]
 python_version = "3.11"
@@ -38,3 +48,7 @@ exclude = ["^v1/"]
 [[tool.mypy.overrides]]
 module = ["spotipy", "spotipy.*"]
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
