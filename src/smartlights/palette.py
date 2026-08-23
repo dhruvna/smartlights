@@ -33,11 +33,15 @@ def extract_palette(image_bytes: bytes, color_count: int = 5) -> Palette:
     colors: list[RGB] = []
 
     for _, palette_index in color_counts:
+        if not isinstance(palette_index, int):
+            raise ValueError("Expected an indexed-color palette")
         offset = palette_index * 3
 
         colors.append(
             RGB(
-                red=raw_palette[offset], green=raw_palette[offset + 1], blue=raw_palette[offset + 2]
+                red=raw_palette[offset],
+                green=raw_palette[offset + 1],
+                blue=raw_palette[offset + 2],
             )
         )
 

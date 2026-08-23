@@ -21,7 +21,7 @@ def download_artwork(url: str, timeout_seconds: float = 10.0) -> bytes:
         if not content_type.startswith("image/"):
             raise ValueError(f"Expected an image; received {content_type}.")
 
-        image_bytes = response.read(MAX_ARTWORK_BYTES + 1)
+        image_bytes = bytes(response.read(MAX_ARTWORK_BYTES + 1))
 
     if len(image_bytes) > MAX_ARTWORK_BYTES:
         raise ValueError("Artwork image exceeds maximum allowed size.")
