@@ -1,5 +1,6 @@
 import time
 
+from smartlights.color import RGB
 from smartlights.controller import LightController
 from smartlights.leds.mock import MockLEDStrip
 from smartlights.palette import extract_palette
@@ -15,6 +16,8 @@ def main() -> None:
     controller = LightController(strip)
 
     previous_track_id: str | None = None
+    previous_is_playing: bool | None = None
+    current_palette: tuple[RGB, ...] | None = None
 
     print("Connected to Spotify. Polling for currently playing track...")
 
@@ -26,9 +29,18 @@ def main() -> None:
                 if previous_track_id is not None:
                     print("Nothing is currently playing")
                     controller.clear()
-                    previous_track_id = None
 
-            elif track.track_id != previous_track_id:
+                previous_track_id = None
+                previous_is_playing = None
+                current_palette = None
+
+                time.sleep(2)
+                continue
+
+            track_changed = track.track_id != previous_track_id
+            playback_changed = track.is_playing != previous_is_playing
+
+            if track_changed:
                 artist_text = ", ".join(track.artists)
 
                 print()
@@ -36,29 +48,53 @@ def main() -> None:
                 print(f"Artists: {artist_text}")
                 print(f"Album: {track.album_name}")
                 print(f"Album Art URL: {track.album_art_url}")
-                print(f"Is Playing: {track.is_playing}")
+
+                current_palette = None
 
                 if track.album_art_url is not None:
                     try:
                         artwork = download_artwork(track.album_art_url)
-                        palette = extract_palette(artwork, color_count=5)
-
-                        frame = controller.show_palette(palette)
+                        current_palette = extract_palette(
+                            artwork,
+                            color_count=5,
+                        )
 
                         print("Extracted Palette:")
-                        print(render_frame(palette, pixel_width=4))
-
-                        print(f"Rendered {len(frame)} colors to the mock LED strip.")
-                        print(render_frame(frame, pixel_width=1))
+                        print(
+                            render_frame(
+                                current_palette,
+                                pixel_width=4,
+                            )
+                        )
 
                     except (OSError, ValueError) as error:
                         print(f"Unable to process album artwork: {error}")
 
-                previous_track_id = track.track_id
+            if not track.is_playing:
+                if track_changed or playback_changed:
+                    print("\nPlayback paused")
+                    controller.clear()
 
-            time.sleep(5)
+            elif current_palette is not None:
+                frame = controller.show_playback(
+                    current_palette,
+                    progress_ms=track.progress_ms,
+                    duration_ms=track.duration_ms,
+                )
+
+                print(
+                    f"\r{render_frame(frame, pixel_width=1)}",
+                    end="",
+                    flush=True,
+                )
+
+            previous_track_id = track.track_id
+            previous_is_playing = track.is_playing
+
+            time.sleep(2)
 
     except KeyboardInterrupt:
+        controller.clear()
         print("\nExiting Spotify poller.")
 
 
