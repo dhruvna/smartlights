@@ -3,6 +3,7 @@ import time
 from smartlights.controller import LightController
 from smartlights.leds.mock import MockLEDStrip
 from smartlights.palette import extract_palette
+from smartlights.preview import render_frame
 from smartlights.spotify.artwork import download_artwork
 from smartlights.spotify.client import SpotifyClient
 
@@ -45,13 +46,11 @@ def main() -> None:
                         frame = controller.show_palette(palette)
 
                         print("Extracted Palette:")
-                        for color in palette:
-                            print(f" {color}")
+                        print(render_frame(palette, pixel_width=4))
 
                         print(f"Rendered {len(frame)} colors to the mock LED strip.")
-                        print("First five pixels:")
-                        for color in frame[:5]:
-                            print(f" {color}")
+                        print(render_frame(frame, pixel_width=1))
+
                     except (OSError, ValueError) as error:
                         print(f"Unable to process album artwork: {error}")
 
