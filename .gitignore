@@ -13,6 +13,7 @@ build/
 # *.log
 
 # # Spotify credentials
+creds.txt
 # config/credentials.py
 
 # # Cache files
