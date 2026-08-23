@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 
+
 def validate_channel(value: int) -> None:
     if not 0 <= value <= 255:
         raise ValueError(f"RGB channel must be between 0 and 255; received {value}")
+
 
 @dataclass(frozen=True, slots=True)
 class RGB:
@@ -17,4 +19,3 @@ class RGB:
 
     def __str__(self) -> str:
         return f"RGB({self.red}, {self.green}, {self.blue})"
-    
