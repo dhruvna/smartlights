@@ -1,7 +1,0 @@
-spotipy
-requests
-typing
-dataclasses
-logging
-colorthief
-rpi_ws281x
