@@ -1,0 +1,99 @@
+import argparse
+import time
+from collections.abc import Sequence
+from typing import cast
+
+from smartlights.color import RGB
+from smartlights.config import AppConfig, Backend
+from smartlights.leds.base import Frame
+from smartlights.leds.factory import create_led_strip
+
+
+def solid_frame(color: RGB, pixel_count: int) -> Frame:
+    if pixel_count <= 0:
+        raise ValueError("Pixel count must be greater than zero")
+
+    return tuple(color for _ in range(pixel_count))
+
+
+def create_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="smartlights-hardware-test",
+        description=("Display a low-brightness RGB sequence on a physical WS281x strip."),
+    )
+
+    parser.add_argument(
+        "--pixel-count",
+        type=int,
+        default=5,
+        help="number of LEDs to test (default: 5)",
+    )
+    parser.add_argument(
+        "--gpio-pin",
+        type=int,
+        default=18,
+        help="BCM GPIO pin used for data (default: 18)",
+    )
+    parser.add_argument(
+        "--brightness",
+        type=int,
+        default=16,
+        help="brightness from 0 to 255 (default: 16)",
+    )
+    parser.add_argument(
+        "--hold-seconds",
+        type=float,
+        default=1.0,
+        help="seconds to display each color (default: 1)",
+    )
+
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> None:
+    arguments = create_parser().parse_args(argv)
+
+    pixel_count = cast(int, arguments.pixel_count)
+    hold_seconds = cast(float, arguments.hold_seconds)
+
+    if hold_seconds <= 0:
+        raise ValueError("Hold time must be greater than zero")
+
+    config = AppConfig(
+        backend=Backend.WS281X,
+        pixel_count=pixel_count,
+        gpio_pin=cast(int, arguments.gpio_pin),
+        brightness=cast(int, arguments.brightness),
+    )
+
+    strip = create_led_strip(config)
+
+    colors = (
+        ("red", RGB(255, 0, 0)),
+        ("green", RGB(0, 255, 0)),
+        ("blue", RGB(0, 0, 255)),
+    )
+
+    print(
+        f"Testing {config.pixel_count} LEDs on "
+        f"BCM GPIO {config.gpio_pin} at "
+        f"brightness {config.brightness}."
+    )
+
+    try:
+        for name, color in colors:
+            print(f"Showing {name}")
+            strip.show(
+                solid_frame(
+                    color,
+                    config.pixel_count,
+                )
+            )
+            time.sleep(hold_seconds)
+    finally:
+        print("Clearing strip")
+        strip.clear()
+
+
+if __name__ == "__main__":
+    main()

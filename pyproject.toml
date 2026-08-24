@@ -15,6 +15,7 @@ dependencies = [
 
 [project.scripts]
 smartlights = "smartlights.app:main"
+smartlights-hardware-test = "smartlights.hardware_test:main"
 
 [project.optional-dependencies]
 dev = [
