@@ -3,7 +3,7 @@ import time
 from smartlights.color import RGB
 from smartlights.config import AppConfig
 from smartlights.controller import LightController
-from smartlights.leds.mock import MockLEDStrip
+from smartlights.leds.factory import create_led_strip
 from smartlights.palette import extract_palette
 from smartlights.playback import PlaybackClock
 from smartlights.preview import render_frame
@@ -14,7 +14,7 @@ from smartlights.spotify.client import SpotifyClient, SpotifyClientError
 def run(config: AppConfig) -> None:
     client = SpotifyClient()
 
-    strip = MockLEDStrip(pixel_count=config.pixel_count)
+    strip = create_led_strip(config)
     controller = LightController(strip)
     playback_clock = PlaybackClock()
 
@@ -81,8 +81,6 @@ def run(config: AppConfig) -> None:
                         print()
                         print(f"Track: {track.name}")
                         print(f"Artists: {artist_text}")
-                        print(f"Album: {track.album_name}")
-                        print(f"Album Art URL: {track.album_art_url}")
 
                         current_palette = None
 

@@ -34,3 +34,19 @@ def test_configuration_rejects_invalid_poll_interval() -> None:
         match="Spotify poll interval must be greater than zero",
     ):
         AppConfig(spotify_poll_interval=0.0)
+
+
+def test_configuration_rejects_brightness_above_255() -> None:
+    with pytest.raises(
+        ValueError,
+        match="Brightness must be between 0 and 255",
+    ):
+        AppConfig(brightness=256)
+
+
+def test_configuration_rejects_negative_brightness() -> None:
+    with pytest.raises(
+        ValueError,
+        match="Brightness must be between 0 and 255",
+    ):
+        AppConfig(brightness=-1)

@@ -1,11 +1,20 @@
 from dataclasses import dataclass
+from enum import StrEnum
+
+
+class Backend(StrEnum):
+    MOCK = "mock"
+    WS281X = "ws281x"
 
 
 @dataclass(frozen=True, slots=True)
 class AppConfig:
+    backend: Backend = Backend.MOCK
     pixel_count: int = 30
     frame_rate: float = 10.0
     spotify_poll_interval: float = 5.0
+    gpio_pin: int = 18
+    brightness: int = 128
 
     def __post_init__(self) -> None:
         if self.pixel_count <= 0:
@@ -16,6 +25,12 @@ class AppConfig:
 
         if self.spotify_poll_interval <= 0:
             raise ValueError("Spotify poll interval must be greater than zero")
+
+        if self.gpio_pin <= 0:
+            raise ValueError("GPIO pin must be greater than zero")
+
+        if not 0 <= self.brightness <= 255:
+            raise ValueError("Brightness must be between 0 and 255")
 
     @property
     def frame_interval(self) -> float:

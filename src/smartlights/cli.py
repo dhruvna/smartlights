@@ -2,7 +2,7 @@ import argparse
 from collections.abc import Sequence
 from typing import cast
 
-from smartlights.config import AppConfig
+from smartlights.config import AppConfig, Backend
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -29,6 +29,25 @@ def create_parser() -> argparse.ArgumentParser:
         default=5.0,
         help="seconds between Spotify requests (default: 5)",
     )
+    parser.add_argument(
+        "--backend",
+        type=Backend,
+        choices=list(Backend),
+        default=Backend.MOCK,
+        help="LED output backend (default: mock)",
+    )
+    parser.add_argument(
+        "--gpio-pin",
+        type=int,
+        default=18,
+        help="BCM GPIO pin used by physical strip (default: 18)",
+    )
+    parser.add_argument(
+        "--brightness",
+        type=int,
+        default=128,
+        help="Physical strip brightness (0-255, default: 128)",
+    )
 
     return parser
 
@@ -38,10 +57,13 @@ def parse_args(argv: Sequence[str] | None = None) -> AppConfig:
     arguments = parser.parse_args(argv)
 
     return AppConfig(
+        backend=cast(Backend, arguments.backend),
         pixel_count=cast(int, arguments.pixel_count),
         frame_rate=cast(float, arguments.frame_rate),
         spotify_poll_interval=cast(
             float,
             arguments.spotify_poll_interval,
         ),
+        gpio_pin=cast(int, arguments.gpio_pin),
+        brightness=cast(int, arguments.brightness),
     )
