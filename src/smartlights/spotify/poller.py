@@ -23,6 +23,7 @@ def run(config: AppConfig) -> None:
     current_palette: tuple[RGB, ...] | None = None
     current_duration_ms: int | None = None
     is_playing = False
+    has_completed_poll = False
 
     last_spotify_poll = float("-inf")
 
@@ -51,7 +52,7 @@ def run(config: AppConfig) -> None:
                 last_spotify_poll = observed_at
 
                 if track is None:
-                    if previous_track_id is not None:
+                    if previous_track_id is not None or not has_completed_poll:
                         print("\nNothing is currently playing")
                         controller.clear()
 
@@ -127,8 +128,10 @@ def run(config: AppConfig) -> None:
                     flush=True,
                 )
 
+            has_completed_poll = True
             time.sleep(config.frame_interval)
 
     except KeyboardInterrupt:
-        controller.clear()
         print("\nExiting Spotify poller.")
+    finally:
+        controller.clear()

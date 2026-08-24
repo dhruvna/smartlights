@@ -31,8 +31,8 @@ class WS281xLEDStrip:
         if pixel_count <= 0:
             raise ValueError("Pixel count must be greater than zero")
 
-        if gpio_pin < 0:
-            raise ValueError("GPIO pin must be a non-negative integer")
+        if gpio_pin <= 0:
+            raise ValueError("GPIO pin must be greater than zero")
 
         if not 0 <= brightness <= 255:
             raise ValueError("Brightness must be an integer between 0 and 255")

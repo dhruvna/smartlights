@@ -72,7 +72,12 @@ The WS281x implementation exists and has been verified on the physical Raspberry
 - Added a backend factory so application and effect code remain hardware-independent.
 - Physical Raspberry Pi validation is the next checkpoint.
 
-### Checkpoint 7 - CURRENT WORK IN PROGRESS!
+### Checkpoint 7 — End-to-end Spotify lighting
+
+- Completed headless Spotify PKCE authorization on the Raspberry Pi.
+- Verified album-art palette extraction on the Pi.
+- Verified Spotify-driven frames on the physical LED strip.
+- Corrected smoke testing to send complete physical-strip frames.
 
 ## Architecture
 
@@ -166,7 +171,7 @@ python -m pip install -e ".[dev,hardware]"
 The planned physical command is:
 
 ```bash
-smartlights --backend ws281x --gpio-pin 18 --pixel-count 60 --brightness 128
+smartlights --backend ws281x --gpio-pin 18 --pixel-count 60 --brightness 8
 ```
 
 Do not use the full 60-pixel command until external 5V power is installed and the physical
