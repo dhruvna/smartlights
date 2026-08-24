@@ -1,10 +1,6 @@
 # Smartlights
 
-A ground-up Python rebuild of a Raspberry Pi controller that turns Spotify album artwork
-into color palettes and animated effects for addressable LEDs.
-
-The project is designed so that effects can be developed and tested safely on Windows
-through an in-memory mock strip before they are run on Raspberry Pi hardware.
+Raspberry Pi 4B connects to Spotify playback and turns album art into color palettes and animated effects for an LED strip!
 
 ## Current status
 
@@ -14,7 +10,7 @@ The learning rebuild currently supports:
 - a typed `LEDStrip` protocol
 - an in-memory mock LED strip
 - palette gradients and playback-progress effects
-- ANSI terminal previews of LED frames
+- terminal previews of LED frames
 - Spotify PKCE login with a persistent token cache
 - currently-playing parsing into a typed `TrackSnapshot`
 - album-art downloading and palette extraction with Pillow
@@ -23,11 +19,7 @@ The learning rebuild currently supports:
 - selectable `mock` and `ws281x` LED backends
 - pytest, Ruff, and strict mypy validation
 
-The WS281x implementation exists but has **not yet been verified on the physical Raspberry
-Pi and LED strip**.
-
-The original implementation is retained under `v1/` as read-only historical reference.
-New production code belongs under `src/smartlights/`, and new tests belong under `tests/`.
+The WS281x implementation exists and has been verified on the physical Raspberry Pi and LED strip.
 
 ## Checkpoint history
 
@@ -79,6 +71,8 @@ New production code belongs under `src/smartlights/`, and new tests belong under
 - Kept the native hardware import isolated to that backend.
 - Added a backend factory so application and effect code remain hardware-independent.
 - Physical Raspberry Pi validation is the next checkpoint.
+
+### Checkpoint 7 - CURRENT WORK IN PROGRESS!
 
 ## Architecture
 
@@ -134,7 +128,6 @@ Useful options:
 
 ```powershell
 smartlights --help
-smartlights --backend mock --pixel-count 60 --frame-rate 20
 ```
 
 Spotify tokens are cached under the user's home directory, not in the repository.
@@ -195,10 +188,5 @@ For a full strip:
 
 ## Planned checkpoints
 
-1. Add an isolated RGB hardware smoke-test command.
-2. Deploy the learning branch to the Raspberry Pi.
-3. Verify a few LEDs at low brightness.
-4. Resolve GPIO permissions or PWM configuration if necessary.
-5. Move the full strip to external 5V power and verify all pixels.
-6. Run Spotify-driven effects on physical hardware.
-7. Add richer music-aware effects and application/service controls.
+1. Move the full strip to external 5V power and verify all pixels.
+2. Add richer music-aware effects and application/service controls.

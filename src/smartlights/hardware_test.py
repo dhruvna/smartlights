@@ -46,7 +46,12 @@ def create_parser() -> argparse.ArgumentParser:
         default=1.0,
         help="seconds to display each color (default: 1)",
     )
-
+    parser.add_argument(
+        "--active-pixel-count",
+        type=int,
+        default=5,
+        help="number of leading LEDs to illuminate (default: 5)",
+    )
     return parser
 
 
@@ -68,6 +73,11 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     strip = create_led_strip(config)
 
+    active_pixel_count = cast(
+        int,
+        arguments.active_pixel_count,
+    )
+
     colors = (
         ("red", RGB(255, 0, 0)),
         ("green", RGB(0, 255, 0)),
@@ -84,9 +94,10 @@ def main(argv: Sequence[str] | None = None) -> None:
         for name, color in colors:
             print(f"Showing {name}")
             strip.show(
-                solid_frame(
-                    color,
-                    config.pixel_count,
+                partial_solid_frame(
+                    color=color,
+                    pixel_count=config.pixel_count,
+                    active_pixel_count=active_pixel_count,
                 )
             )
             time.sleep(hold_seconds)
@@ -94,6 +105,28 @@ def main(argv: Sequence[str] | None = None) -> None:
         print("Clearing strip")
         strip.clear()
 
+def partial_solid_frame(
+    color: RGB,
+    pixel_count: int,
+    active_pixel_count: int,
+) -> Frame:
+    if pixel_count <= 0:
+        raise ValueError(
+            "Pixel count must be greater than zero"
+        )
+
+    if not 0 <= active_pixel_count <= pixel_count:
+        raise ValueError(
+            "Active pixel count must be between zero "
+            "and the physical pixel count"
+        )
+
+    black = RGB(0, 0, 0)
+
+    return tuple(
+        color if index < active_pixel_count else black
+        for index in range(pixel_count)
+    )
 
 if __name__ == "__main__":
     main()
