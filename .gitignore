@@ -12,6 +12,9 @@ build/
 # Logs
 # *.log
 
+# old readme
+OLD_README.md
+
 # # Spotify credentials
 creds.txt
 # config/credentials.py
