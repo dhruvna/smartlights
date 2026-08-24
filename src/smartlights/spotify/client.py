@@ -29,12 +29,19 @@ class SpotifyClient:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
 
         cache_handler = CacheFileHandler(cache_path=str(cache_path))
+        open_browser = (
+            os.getenv(
+                "SMARTLIGHTS_SPOTIFY_OPEN_BROWSER",
+                "true",
+            ).lower()
+            == "true"
+        )
         auth_manager = SpotifyPKCE(
             client_id=client_id,
             redirect_uri=REDIRECT_URI,
             scope=SPOTIFY_SCOPE,
             cache_handler=cache_handler,
-            open_browser=True,
+            open_browser=open_browser,
         )
 
         self._client = spotipy.Spotify(

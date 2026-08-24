@@ -26,7 +26,7 @@ def run(config: AppConfig) -> None:
 
     last_spotify_poll = float("-inf")
 
-    print("Connected to Spotify. Polling for currently playing track...")
+    print("Spotify client initialized. Polling for playback...")
 
     try:
         while True:
