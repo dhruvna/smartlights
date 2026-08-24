@@ -1,22 +1,20 @@
 import time
 
 from smartlights.color import RGB
+from smartlights.config import AppConfig
 from smartlights.controller import LightController
 from smartlights.leds.mock import MockLEDStrip
 from smartlights.palette import extract_palette
 from smartlights.playback import PlaybackClock
 from smartlights.preview import render_frame
 from smartlights.spotify.artwork import download_artwork
-from smartlights.spotify.client import SpotifyClient
-
-SPOTIFY_POLL_INTERVAL_SECONDS = 5.0
-FRAME_INTERVAL_SECONDS = 0.1
+from smartlights.spotify.client import SpotifyClient, SpotifyClientError
 
 
-def main() -> None:
+def run(config: AppConfig) -> None:
     client = SpotifyClient()
 
-    strip = MockLEDStrip(pixel_count=30)
+    strip = MockLEDStrip(pixel_count=config.pixel_count)
     controller = LightController(strip)
     playback_clock = PlaybackClock()
 
@@ -34,8 +32,21 @@ def main() -> None:
         while True:
             now = time.monotonic()
 
-            if now - last_spotify_poll >= SPOTIFY_POLL_INTERVAL_SECONDS:
-                track = client.currently_playing()
+            if now - last_spotify_poll >= config.spotify_poll_interval:
+                try:
+                    track = client.currently_playing()
+                except SpotifyClientError as error:
+                    last_spotify_poll = time.monotonic()
+
+                    print(
+                        "\nSpotify request failed; "
+                        f"retrying in {config.spotify_poll_interval:g} seconds: "
+                        f"{error}"
+                    )
+
+                    time.sleep(config.frame_interval)
+                    continue
+
                 observed_at = time.monotonic()
                 last_spotify_poll = observed_at
 
@@ -118,12 +129,8 @@ def main() -> None:
                     flush=True,
                 )
 
-            time.sleep(FRAME_INTERVAL_SECONDS)
+            time.sleep(config.frame_interval)
 
     except KeyboardInterrupt:
         controller.clear()
         print("\nExiting Spotify poller.")
-
-
-if __name__ == "__main__":
-    main()
