@@ -3,12 +3,15 @@ import time
 from smartlights.color import RGB
 from smartlights.config import AppConfig
 from smartlights.controller import LightController
+from smartlights.effects.flow import animation_phase
 from smartlights.leds.factory import create_led_strip
 from smartlights.palette import extract_palette
 from smartlights.playback import PlaybackClock
 from smartlights.preview import render_frame
 from smartlights.spotify.artwork import download_artwork
 from smartlights.spotify.client import SpotifyClient, SpotifyClientError
+
+FLOW_CYCLE_DURATION_MS = 8_000
 
 
 def run(config: AppConfig) -> None:
@@ -116,10 +119,14 @@ def run(config: AppConfig) -> None:
             if is_playing and current_palette is not None and current_duration_ms is not None:
                 progress_ms = playback_clock.progress_at(time.monotonic())
 
-                frame = controller.show_playback(
+                phase = animation_phase(
+                    elapsed_ms=progress_ms,
+                    cycle_duration_ms=FLOW_CYCLE_DURATION_MS,
+                )
+
+                frame = controller.show_flowing_palette(
                     current_palette,
-                    progress_ms=progress_ms,
-                    duration_ms=current_duration_ms,
+                    phase=phase,
                 )
 
                 print(

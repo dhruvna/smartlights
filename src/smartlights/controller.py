@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 
 from smartlights.color import RGB
+from smartlights.effects.flow import flowing_palette
 from smartlights.effects.palette import palette_gradient
 from smartlights.effects.progress import playback_progress
 from smartlights.leds.base import Frame, LEDStrip
@@ -12,6 +13,12 @@ class LightController:
 
     def show_palette(self, palette: Sequence[RGB]) -> Frame:
         frame = palette_gradient(palette=palette, pixel_count=self._strip.pixel_count)
+
+        self._strip.show(frame)
+        return frame
+
+    def show_flowing_palette(self, palette: Sequence[RGB], phase: float) -> Frame:
+        frame = flowing_palette(palette=palette, pixel_count=self._strip.pixel_count, phase=phase)
 
         self._strip.show(frame)
         return frame

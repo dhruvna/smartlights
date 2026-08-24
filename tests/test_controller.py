@@ -48,3 +48,24 @@ def test_show_playback_writes_progress_frame() -> None:
     assert strip.pixels == frame
     assert frame[:2] != (RGB(0, 0, 0), RGB(0, 0, 0))
     assert frame[2].red < 100
+
+
+def test_controller_displays_flowing_palette() -> None:
+    strip = MockLEDStrip(pixel_count=4)
+    controller = LightController(strip)
+
+    frame = controller.show_flowing_palette(
+        palette=(
+            RGB(255, 0, 0),
+            RGB(0, 0, 255),
+        ),
+        phase=0.25,
+    )
+
+    assert frame == (
+        RGB(128, 0, 128),
+        RGB(0, 0, 255),
+        RGB(128, 0, 128),
+        RGB(255, 0, 0),
+    )
+    assert strip.pixels == frame
