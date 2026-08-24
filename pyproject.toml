@@ -54,7 +54,7 @@ files = ["src", "tests"]
 exclude = ["^v1/"]
 
 [[tool.mypy.overrides]]
-module = ["spotipy", "spotipy.*"]
+module = ["spotipy", "spotipy.*", "rpi_ws281x"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
