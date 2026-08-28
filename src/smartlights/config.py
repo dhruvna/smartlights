@@ -14,7 +14,7 @@ class AppConfig:
     frame_rate: float = 10.0
     spotify_poll_interval: float = 5.0
     gpio_pin: int = 18
-    brightness: int = 128
+    brightness: int = 32
 
     def __post_init__(self) -> None:
         if self.pixel_count <= 0:

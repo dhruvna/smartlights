@@ -171,7 +171,7 @@ python -m pip install -e ".[dev,hardware]"
 The planned physical command is:
 
 ```bash
-smartlights --backend ws281x --gpio-pin 18 --pixel-count 60 --brightness 8
+smartlights --backend ws281x --gpio-pin 18 --pixel-count 120 --brightness 32
 ```
 
 Do not use the full 60-pixel command until external 5V power is installed and the physical
@@ -179,8 +179,9 @@ backend passes a low-brightness smoke test.
 
 ## Hardware safety
 
-A WS2812-style RGB pixel can draw up to roughly 60 mA at full white. A 60-pixel strip can
-therefore approach 3.6 A in the worst case.
+A WS2812-style RGB pixel can draw up to roughly 60 mA at full white. A
+120-pixel strip can therefore approach 7.2 A, or 36 W at 5 V, in the
+conservative worst-case estimate.
 
 For a full strip:
 
@@ -193,5 +194,9 @@ For a full strip:
 
 ## Planned checkpoints
 
-1. Move the full strip to external 5V power and verify all pixels.
-2. Add richer music-aware effects and application/service controls.
+1. Build the fused external 5 V distribution and AHCT125 level shifter.
+2. Verify start, middle, and end power injection.
+3. Add progressive full-strip hardware diagnostics.
+4. Configure reliable background operation with systemd.
+5. Add smoother playback-state and palette transitions.
+6. Add richer music-aware effects and application/service controls.
