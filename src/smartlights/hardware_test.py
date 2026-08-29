@@ -13,6 +13,7 @@ from smartlights.power import estimate_frame_current_ma
 
 BLACK = RGB(0, 0, 0)
 
+
 class DiagnosticMode(StrEnum):
     CHANNELS = "channels"
     CHASE = "chase"
@@ -20,10 +21,12 @@ class DiagnosticMode(StrEnum):
     RAMP = "ramp"
     WHITE = "white"
 
+
 @dataclass(frozen=True, slots=True)
 class DiagnosticStep:
     label: str
     frame: Frame
+
 
 def partial_solid_frame(
     color: RGB,
@@ -35,8 +38,9 @@ def partial_solid_frame(
 
     if not 0 <= active_pixel_count <= pixel_count:
         raise ValueError("Active pixel count must be between zero and the physical pixel count")
-    
+
     return tuple(color if index < active_pixel_count else BLACK for index in range(pixel_count))
+
 
 def single_pixel_frame(color: RGB, pixel_count: int, active_index: int) -> Frame:
     if pixel_count <= 0:
@@ -46,6 +50,7 @@ def single_pixel_frame(color: RGB, pixel_count: int, active_index: int) -> Frame
         raise ValueError("Active index must identify a physical pixel")
 
     return tuple(color if index == active_index else BLACK for index in range(pixel_count))
+
 
 def pixel_range_frame(
     color: RGB,
@@ -136,6 +141,7 @@ def build_diagnostic_steps(
             frame=partial_solid_frame(RGB(255, 255, 255), pixel_count, pixel_count),
         ),
     )
+
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -245,4 +251,3 @@ def main(argv: Sequence[str] | None = None) -> None:
 
 if __name__ == "__main__":
     main()
-    

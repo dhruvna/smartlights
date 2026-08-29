@@ -3,7 +3,7 @@ from smartlights.config import Backend
 
 
 def test_cli_uses_default_configuration() -> None:
-    assert parse_args([]).pixel_count == 30
+    assert parse_args([]).pixel_count == 120
 
 
 def test_cli_reads_configuration_options() -> None:

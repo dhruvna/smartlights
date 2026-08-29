@@ -14,8 +14,8 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--pixel-count",
         type=int,
-        default=30,
-        help="number of LEDs in the strip (default: 30)",
+        default=120,
+        help="number of LEDs in the strip (default: 120)",
     )
     parser.add_argument(
         "--frame-rate",
@@ -28,6 +28,12 @@ def create_parser() -> argparse.ArgumentParser:
         type=float,
         default=5.0,
         help="seconds between Spotify requests (default: 5)",
+    )
+    parser.add_argument(
+        "--transition-duration",
+        type=float,
+        default=1.0,
+        help="duration of the transition in seconds (default: 1.0)",
     )
     parser.add_argument(
         "--backend",
@@ -63,6 +69,10 @@ def parse_args(argv: Sequence[str] | None = None) -> AppConfig:
         spotify_poll_interval=cast(
             float,
             arguments.spotify_poll_interval,
+        ),
+        transition_duration=cast(
+            float,
+            arguments.transition_duration,
         ),
         gpio_pin=cast(int, arguments.gpio_pin),
         brightness=cast(int, arguments.brightness),

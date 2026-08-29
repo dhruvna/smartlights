@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum
+from math import isfinite
 
 
 class Backend(StrEnum):
@@ -10,9 +11,10 @@ class Backend(StrEnum):
 @dataclass(frozen=True, slots=True)
 class AppConfig:
     backend: Backend = Backend.MOCK
-    pixel_count: int = 30
+    pixel_count: int = 120
     frame_rate: float = 10.0
     spotify_poll_interval: float = 5.0
+    transition_duration: float = 1.0
     gpio_pin: int = 18
     brightness: int = 32
 
@@ -25,6 +27,9 @@ class AppConfig:
 
         if self.spotify_poll_interval <= 0:
             raise ValueError("Spotify poll interval must be greater than zero")
+
+        if not isfinite(self.transition_duration) or self.transition_duration <= 0:
+            raise ValueError("Transition duration must be finite and greater than zero")
 
         if self.gpio_pin <= 0:
             raise ValueError("GPIO pin must be greater than zero")

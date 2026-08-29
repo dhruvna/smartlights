@@ -11,14 +11,37 @@ class LightController:
     def __init__(self, strip: LEDStrip) -> None:
         self._strip = strip
 
-    def show_palette(self, palette: Sequence[RGB]) -> Frame:
-        frame = palette_gradient(palette=palette, pixel_count=self._strip.pixel_count)
+    def show_palette(
+        self,
+        palette: Sequence[RGB],
+    ) -> Frame:
+        frame = palette_gradient(
+            palette=palette,
+            pixel_count=self._strip.pixel_count,
+        )
 
         self._strip.show(frame)
         return frame
 
-    def show_flowing_palette(self, palette: Sequence[RGB], phase: float) -> Frame:
-        frame = flowing_palette(palette=palette, pixel_count=self._strip.pixel_count, phase=phase)
+    def show_frame(
+        self,
+        frame: Sequence[RGB],
+    ) -> Frame:
+        complete_frame = tuple(frame)
+
+        self._strip.show(complete_frame)
+        return complete_frame
+
+    def show_flowing_palette(
+        self,
+        palette: Sequence[RGB],
+        phase: float,
+    ) -> Frame:
+        frame = flowing_palette(
+            palette=palette,
+            pixel_count=self._strip.pixel_count,
+            phase=phase,
+        )
 
         self._strip.show(frame)
         return frame
@@ -29,7 +52,10 @@ class LightController:
         progress_ms: int,
         duration_ms: int,
     ) -> Frame:
-        gradient = palette_gradient(palette=palette, pixel_count=self._strip.pixel_count)
+        gradient = palette_gradient(
+            palette=palette,
+            pixel_count=self._strip.pixel_count,
+        )
         frame = playback_progress(
             frame=gradient,
             progress_ms=progress_ms,

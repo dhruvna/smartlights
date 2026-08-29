@@ -6,7 +6,7 @@ from smartlights.config import AppConfig
 def test_default_configuration() -> None:
     config = AppConfig()
 
-    assert config.pixel_count == 30
+    assert config.pixel_count == 120
     assert config.frame_rate == 10.0
     assert config.spotify_poll_interval == 5.0
     assert config.brightness == 32

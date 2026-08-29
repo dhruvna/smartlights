@@ -7,7 +7,7 @@ def test_factory_creates_mock_strip_by_default() -> None:
     strip = create_led_strip(AppConfig())
 
     assert isinstance(strip, MockLEDStrip)
-    assert strip.pixel_count == 30
+    assert strip.pixel_count == 120
 
 
 def test_factory_uses_configured_pixel_count() -> None:
