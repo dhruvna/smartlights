@@ -174,7 +174,7 @@ The planned physical command is:
 smartlights --backend ws281x --gpio-pin 18 --pixel-count 120 --brightness 32
 ```
 
-Do not use the full 60-pixel command until external 5V power is installed and the physical
+Do not use the full 120-pixel command until external 5V power is installed and the physical
 backend passes a low-brightness smoke test.
 
 ## Hardware safety

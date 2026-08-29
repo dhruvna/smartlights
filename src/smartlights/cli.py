@@ -45,8 +45,8 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--brightness",
         type=int,
-        default=128,
-        help="Physical strip brightness (0-255, default: 128)",
+        default=32,
+        help="Physical strip brightness (0-255, default: 32)",
     )
 
     return parser
